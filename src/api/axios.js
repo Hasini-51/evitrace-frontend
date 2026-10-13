@@ -2,16 +2,17 @@ import axios from 'axios'
 
 /**
  * Axios instance pre-configured for EviTrace API.
- * - Base URL proxied via Vite to http://localhost:8080
+ * - In production: uses VITE_API_URL (e.g. https://evitrace-backend.onrender.com/api)
+ * - In local dev:  uses '/api' which Vite proxies to http://localhost:8080
  * - Automatically injects the Bearer JWT from localStorage
  * - On 401, clears the token and redirects to login
  */
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000,
+  timeout: 30000,
 })
 
 // ─── Request interceptor: inject JWT ───────────────────────────────────────
